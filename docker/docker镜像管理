@@ -1,0 +1,52 @@
+镜像市场
+http://hub.daocloud.io/
+
+一、	显示本地镜像
+docker images
+
+二、	镜像查找
+docker search nginx
+docker pull
+
+三、	镜像删除：
+docker rm 删除容器
+docker rmi image id (当容器存在的时候删不掉，应该先删除镜像再删除容器)
+docker tag test:0.1 test:0.2
+
+四、	镜像拉取和推送
+Docker pull 即可
+
+五、	查看镜像的具体信息：
+docker inspect f3c5dcc79825
+##可以看到相关具体配置，和镜像分层。
+docker inspect containerid
+
+六、	运行一个容器：
+Docker run –dit nginx
+##
+--name   ##容器名称
+--link   ##连接某个镜像
+--port   ##端口映射
+--volum  ##持久化存储
+
+七、	镜像的导入导出：
+docker save -o ubuntu_latest.tar 104bec311bcd     ##导入一个镜像
+docker load < ubuntu_latest.tar
+docker exec -it 5347d7344839 /bin/bash
+
+八、	创建一个已经存在的镜像ID然后用commit提交：
+
+1、	启动一个镜像，然后创建一个叫xiaoluo的文件，然后退出：
+docker run -it centos /bin/bash
+echo "xiaoluo">xiaoluo.txt
+生成容器:b23bde71b437
+2、	用commit 提交相关镜像生成一个新镜像：
+docker commit -m "ADD xiaoluo.txt" -a "xiaoluo" b23bde71b437 test
+3.然后生成了这个镜像
+docker images
+4、我们可以查看 那个文件内容是否是xiaoluo呢：
+docker run test cat xiaoluo.txt
+
+##当然我们不推荐这种方式，应该使用Dockerfile来操作的。后面才讲。
+
+docker history test

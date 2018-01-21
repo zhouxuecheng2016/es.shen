@@ -1,0 +1,28 @@
+1: docker create nginx
+   docker start reverent_visvesvaraya
+
+2:docker ps
+docker ps -a
+
+3:docker exec -it e94e2bf9196f /bin/bash   ##进入容器
+
+4:docker stop e94e2bf9196f
+
+5:docker rm e94e2bf9196f    #删除已经停止的容器。
+  rm -f 强制删除
+
+6:docker run nginx
+run 包含了create&start
+
+7:docker run -it nginx /bin/bash
+docker run -d nginx
+docker run -d --name web nginx
+docker rm -f web
+docker run -d --name web -P nginx
+docker run -d --name web -p 80:80 nginx     ##小写
+
+
+###给容器停止在启动，容器的IP和端口可能是改变的。
+
+NetworkSettings
+"IPAddress": "172.17.0.2",

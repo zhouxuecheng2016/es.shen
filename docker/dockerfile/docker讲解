@@ -1,0 +1,76 @@
+我们之前讲到过用commit可以提交东西到镜像，但是我们提倡的是用Dockfile的方式来对镜像镜像修改，Dockerfile是Docker的解释型语言，通过提交Dockerfile来实现对镜像的构建。
+
+Dockerfile忽略大小写，注释用#开头，
+1:FROM指令
+
+2:MAINTAINER（用来指定镜像创建者信息）
+maintainer
+
+3:RUN（执行相关的系统命令）
+构建images时候执行
+
+4:CMD(系统启动时候执行指令，但是会被第一条启动所覆盖)
+images启动为container的时候才会执行
+CMD ["executable","param1","param2"] 使用 exec 执行，推荐方式；
+CMD command param1 param2 在 /bin/sh中执行，提供给需要交互的应用；
+CMD ["param1","param2"] 提供给ENTRYPOINT的默认参数；
+(1)CMD指定容器启动是执行的命令，每个Dockerfile只能有一条CMD命令，如果指定了多条，只有最后一条会被执行。
+(2)如果你在启动容器的时候也指定的命令，那么会覆盖Dockerfile构建的镜像里面CMD命令。
+
+5:ENTRYPOINT(系统启动执行命令)
+ENTRYPOINT ["executable", "param1","param2"]
+ENTRYPOINT command param1 param2（shell中执行）。
+entrypoint
+CMD一样也是最后一条命令执行，但是和CMD不同的是，CMD命令会被docker run 中执行的命令所覆盖
+当然两者可以结合
+ENTRYPOINT ["python", "/test.py"]
+CMD ["sleep", "10"]
+##在启动的时候等于就执行了，python /test.py sleep 10
+
+6:EXPOSE(指定容器需要映射到宿主机器的端口)
+在编写Docker的时候暴露容器的端口，但是只是在内部暴露，外部想映射还需要-p选项
+
+7:VOLUME(是文件可以持久化存在，或者在容器之间共享数据)
+
+8:ENV（用于设置环境变量）
+构建镜像和容器启动时候都可以使用
+
+9:ADD与COPY
+两个都是复制本机文件到镜像里，区别是ADD如果文件是可识别的压缩格式，则docker会帮忙解压缩
+
+10:WORKDIR
+切换当前工作目录，写建议写绝对路径，写相对路径会叠加。
+
+11:ONBUILD（在子镜像中执行）
+ONBUILD <Dockerfile关键字>
+ONBUILD 指定的命令在构建镜像时并不执行，而是在它的子镜像中执行
+
+
+12:USER（设置container容器的用户）
+USER（设置container容器的用户）
+User nginx
+##容器执行时候指定的用户，默认是root:
+
+13:arg
+ARG指定了一个变量在docker build的时候使用
+
+build images:
+docker build -t lnmp/tomcat:1.0 .
+
+docker port
+
+docker build -t lnmp/nginx:1.0 .
+docker build -t lnmp/php:1.0 .
+docker build -t lnmp/mysql:1.0 .
+
+docker run -dit --name php -v /web:/web lnmp/php:1.0
+docker run -dit --name web -p 8090:80 -v /web:/web --link php:php lnmp/nginx:1.0
+docker run -dit --name mysql -p 3306:3306 -v /opt/data:/var/lib/mysql lnmp/mysql:1.0
+
+在使用Docker的时候我们会常常碰到这么一种应用，就是我需要两个或多个容器，其中某些容器需要使用另外一些容器提供的服务
+sudo docker inspect -f "{{ .Name }}" aed84ee21bde
+
+
+
+
+

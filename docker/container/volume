@@ -1,0 +1,69 @@
+Docker提出了Volume的概念.简单来说,Volume就是目录或者文件,它可以绕过默认的联合文件系统,而以正常的文件或者目录
+         的形式存在于宿主机上。
+
+   volume特点:
+   1:持久化存储文件
+   2:容器间共享文件
+   3:修改会修改文件立马
+
+   docker run -it --name test -v /test nginx /bin/bash
+   root@c7bbc3ebb87c:/# cd /test/
+   root@c7bbc3ebb87c:/test# echo "xiaoluo" > test.txt
+   root@c7bbc3ebb87c:/test# exit
+
+   docker run -it --name test2 --volumes-from test 1d47583627b0 /bin/bash
+
+   docker run -it --name test3 --volumes-from test2 1d47583627b0 /bin/bash或者
+   docker run -it --name test3 --volumes-from a5bee92e4220 1d47583627b0 /bin/bash
+
+   ##删除容器的时候加上-v参数才能删除逻辑卷，不然不存在的卷会让镜像莫名增大
+   [root@node3 ~]# docker rm -f -v test
+
+一、挂载文件到容器里
+   docker run -it -v /root/xiaoluo:/test 1d47583627b0 /bin/bash
+
+   -v /root/xiaoluo:/test
+   本地目录:容器目录
+   Mysql服务器
+
+二、挂载目录到文件里
+   容器间共享：
+
+   如果你希望在容器间共享卷，那么就可以使用数据型容器。我们可以先创建一个命名容器：
+   [root@localhost src]# docker create -v /dbdata --name dbdata centos
+   接下来，我们通过--volumes-from选项来进行数据卷的复用：
+   [root@localhost src]# docker run -it --volumes-from dbdata --name db1 centos
+
+   再创建一个容器：
+   [root@localhost src]# docker run -it --volumes-from dbdata --name db2 centos
+
+   之后我们就可以在db1和db2中同时对/dbdata进行操作了。
+
+三、逻辑卷备份与恢复
+备份:
+docker run -it --name test -v /test nginx /bin/bash
+
+docker run --volumes-from test -v $(pwd):/backup centos tar cvf /backup/backup.tar /test
+
+-v
+$(pwd):/backup = 本地目录:容器目录
+
+恢复:
+1、创建一个空的容器：
+docker run -v $(pwd):/backup nginx tar xvf /backup/backup.tar
+
+2、再创建一个容器，挂载来做dbdata2，把当前目录挂载到/test，然后再解压backup.tar：
+docker run -it --volumes-from 0bbfacf8b2fd nginx /bin/bash
+
+3、在挂载一个容器过来测试一下文件是否正常,因为我们欢迎回去到/test.而前面又是做/test的volume，所以数据就恢复了。
+docker run -it --volumes-from dbdata2 centos /bin/bash
+
+
+Docker管理容器数据
+volume是指在存在于一个或多个容器中的特定目录，此目录能够绕过Union File System提供一些用于持续存储或共享数据的特性。
+(1)数据卷可在容器之间共享或重用
+(2)数据卷中的更改可以直接生效
+(3)数据卷中的更改不会包含在镜像的更新中
+(4)数据卷的生命周期一直持续到没有容器使用它为止
+
+创建、挂载数据卷容器

@@ -1,0 +1,58 @@
+
+http://get.daocloud.io/
+
+If you would like to use Docker as a non-root user, you should now consider
+adding your user to the "docker" group with something like:
+
+  sudo usermod -aG docker your-user
+
+Remember that you will have to log out and back in for this to take effect!
+
+WARNING: Adding a user to the "docker" group will grant the ability to run
+         containers which can be used to obtain root privileges on the
+         docker host.
+         Refer to https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface
+         for more information.
+
+/etc/docker/daemon.json{"registry-mirrors": ["http://f1f04158.m.daocloud.io"]}
+
+
+1:yum -y install docker-ce(设置源)
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+2:设置镜像
+
+3:/usr/lib/systemd/system/docker.service
+systemctl daemon-reload
+systemctl restart docker
+
+repository
+
+REPOSITORY+TAG=Container
+docker run
+docker ps
+docker run -dit -P nginx  -P随机端口
+                          -dit
+
+--name:指定容器名称
+-P：随机映射端口
+-v:实现文件或者目录挂载
+-i:交互
+-t:tty
+-d 后台运行
+
+相关容器的日志
+docker logs container_id
+
+登录容器
+docker exec -it container_id  /bin/bash
+/bin/bash
+
+docker run nginx uname -a
+
+docker rm -> docker ps -a
+
+docker rmi -> docker images
+
+
+docker pull -> docker run
