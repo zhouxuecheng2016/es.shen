@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="es-core-doc" />
         <module name="es-core-first" />
+        <module name="es-senior" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="es-core-doc" target="1.5" />
       <module name="es-core-first" target="1.7" />
+      <module name="es-senior" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

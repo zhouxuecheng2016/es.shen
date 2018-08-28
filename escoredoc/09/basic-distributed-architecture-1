@@ -1,0 +1,16 @@
+1、Elasticsearch对复杂分布式机制的透明隐藏特性
+分片机制（我们之前随随便便就将一些document插入到es集群中去了,我们有没有care过数据怎么进行分片的，数据到哪个shard中去）
+cluster discovery（集群发现机制，我们之前在做那个集群status从yellow转green的实验里，直接启动了第二个es进程，
+                   那个进程作为一个node自动就发现了集群，并且加入了进去，还接受了部分数据，replica shard）
+shard负载均衡（举例，假设现在有3个节点，总共有25个shard要分配到3个节点上去，es会自动进行均匀分配，
+              以保持每个节点的均衡的读写负载请求）
+shard副本，请求路由，集群扩容，shard重分配
+2、Elasticsearch的垂直扩容与水平扩容
+
+3、增减或减少节点时的数据rebalance
+
+4、master节点
+
+5、节点对等的分布式架构
+
+

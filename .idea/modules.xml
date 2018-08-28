@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/escoredoc/es-core-doc.iml" filepath="$PROJECT_DIR$/escoredoc/es-core-doc.iml" />
       <module fileurl="file://$PROJECT_DIR$/escorefirst/es-core-first.iml" filepath="$PROJECT_DIR$/escorefirst/es-core-first.iml" />
+      <module fileurl="file://$PROJECT_DIR$/es-senior/es-senior.iml" filepath="$PROJECT_DIR$/es-senior/es-senior.iml" />
       <module fileurl="file://$PROJECT_DIR$/es.shen.iml" filepath="$PROJECT_DIR$/es.shen.iml" />
     </modules>
   </component>
